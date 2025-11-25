@@ -6,6 +6,11 @@ Users can **connect a wallet**, **claim testnet USDC** from a faucet, and **purc
 
 ---
 
+## Live Demo
+
+Try the DApp here:  
+[https://erc20-usdc-payment.vercel.app/](https://erc20-usdc-payment.vercel.app/)
+
 ## What This Project Does
 
 This project is a technical showcase demonstrating how to build a basic Web3 payment flow.
