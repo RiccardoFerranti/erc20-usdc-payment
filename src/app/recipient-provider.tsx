@@ -3,7 +3,7 @@
 import type { Dispatch, SetStateAction} from "react";
 import { createContext, useContext, useState } from "react";
 
-import { USDC_TOKEN_ADDRESS } from "@/consts/usdc";
+import { RECIPIENT_ADDRESS } from "@/consts/usdc";
 
 interface IRecipientContextType {
   recipient: string;
@@ -15,7 +15,7 @@ interface IRecipientContextType {
 const RecipientContext = createContext<IRecipientContextType | undefined>(undefined);
 
 export const RecipientProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [recipient, setRecipient] = useState<string>(USDC_TOKEN_ADDRESS || '');
+  const [recipient, setRecipient] = useState<string>(RECIPIENT_ADDRESS || '');
   const [recipientError, setRecipientError] = useState<string | undefined>(undefined);
 
   return (
