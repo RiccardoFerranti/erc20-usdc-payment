@@ -92,7 +92,7 @@ export function usePay(props: IUsePayProps) {
       ),
     waitingConfirmation: () =>
       toast.loading(
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           <span className="font-bold">Waiting for wallet confirmation…</span>
           <span>Paying <b>{price} {symbol}</b> for {name}</span>
         </div>,
@@ -100,7 +100,7 @@ export function usePay(props: IUsePayProps) {
       ),
     transactionBroadcasted: (txHash: string) =>
       toast.loading(
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           <span className="font-bold">Transaction broadcasted</span>
           <span className="inline">
             It may take a few moments to be included in a block.{' '}
