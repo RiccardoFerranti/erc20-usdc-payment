@@ -12,7 +12,7 @@ export default function useUserBalance(tokenContract: string) {
     args: address ? [address] : undefined,
     chainId,
     query: {
-      enabled: Boolean(address && chainId),
+      enabled: Boolean(address),
     },
   });
 
