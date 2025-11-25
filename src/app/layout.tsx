@@ -1,5 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+
+
+import { RecipientProvider } from "@/app/recipient-provider";
+import WagmiProvider from "@/app/wagmi-provider";
+import Header from "@/components/header";
+import { Toaster } from "@/components/ui/sonner";
+
 import "./globals.css";
 
 const geistSans = Geist({
@@ -25,9 +32,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
       >
-        {children}
+        <WagmiProvider>
+          <RecipientProvider>
+            <div className="flex flex-col gap-4">
+              <Header />
+              {children}
+              <Toaster
+                position="top-center"
+                swipeDirections={['top', 'right', 'left']} // allow swipe
+                richColors
+              />
+            </div>
+          </RecipientProvider>
+        </WagmiProvider>
       </body>
     </html>
   );
