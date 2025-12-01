@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
-
 import { RecipientProvider } from "@/app/recipient-provider";
 import WagmiProvider from "@/app/wagmi-provider";
 import Header from "@/components/header";
@@ -38,7 +37,9 @@ export default function RootLayout({
           <RecipientProvider>
             <div className="flex flex-col gap-4">
               <Header />
-              {children}
+              <main className="w-full flex flex-col items-center justify-center gap-4 container mx-auto px-4">
+                {children}
+              </main>
               <Toaster
                 position="top-center"
                 swipeDirections={['top', 'right', 'left']} // allow swipe
