@@ -1,8 +1,8 @@
-import { cookieStorage,createStorage,  createConfig, http, injected } from '@wagmi/core';
+import { cookieStorage, createStorage, createConfig, http, injected } from '@wagmi/core';
 import * as wagmiChains from '@wagmi/core/chains'; // imports all exported chains
-import { metaMask, walletConnect } from 'wagmi/connectors';
+// import { metaMask, walletConnect } from 'wagmi/connectors';
 
-import { PROJECT_ID } from '@/consts/usdc';
+// import { PROJECT_ID } from '@/consts/usdc';
 
 const allChains = Object.values(wagmiChains);
 const firstChain = allChains[0];
@@ -11,8 +11,8 @@ export const config = createConfig({
   chains: [firstChain, ...allChains.filter(c => c.id !== firstChain.id)], // first chain + rest
   connectors: [
     injected(),
-    metaMask(),
-    walletConnect({ projectId: PROJECT_ID }),
+    // metaMask(),
+    // walletConnect({ projectId: PROJECT_ID }),
   ],
   storage: createStorage({
     storage: cookieStorage,
