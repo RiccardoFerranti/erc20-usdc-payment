@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import Faucet from '@/components/faucet';
 import ProductsList from '@/components/products-list';
@@ -9,10 +9,11 @@ export default function HomePage() {
   const isDesktop = useIsDesktop();
 
   return (
-    <div className="flex flex-col items-center gap-6">
-      <div className="flex items-center justify-end w-full">
-        <h1 className="absolute left-1/2 transform -translate-x-1/2 text-xl md:text-2xl">Products</h1>
-        {isDesktop && <Balance />}
+    <div className="flex flex-col items-center gap-4">
+      <div className="flex w-full items-center">
+        <div className="flex-1" />
+        <h1 className="flex-1 text-center text-xl md:text-2xl">Products</h1>
+        <div className="flex-1 flex justify-end">{isDesktop && <Balance />}</div>
       </div>
       <Faucet />
       <ProductsList />

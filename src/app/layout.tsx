@@ -35,7 +35,7 @@ export default function RootLayout({
       >
         <WagmiProvider>
           <RecipientProvider>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col md:gap-4">
               <Header />
               <main className="w-full flex flex-col items-center justify-center gap-4 container mx-auto px-4">
                 {children}

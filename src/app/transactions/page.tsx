@@ -2,7 +2,7 @@
 
 import { ExternalLink } from 'lucide-react';
 import { useMemo } from 'react';
-import { useChainId } from 'wagmi';
+import { useAccount, useChainId } from 'wagmi';
 
 import BackButton from '@/components/back-button';
 import { Badge } from '@/components/ui/badge';
@@ -14,6 +14,8 @@ import useSymbol from '@/hooks/use-symbol';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function LatestTransactionsPage() {
+  const { isConnected } = useAccount();
+
   // Subscribe to the store; automatically re-renders when store updates
   const allTransactions = useTxStore((state) => state.transactions);
 
@@ -23,16 +25,26 @@ export default function LatestTransactionsPage() {
 
   const { symbol, isSymbolLoading } = useSymbol(USDC_TOKEN_ADDRESS, chainId);
 
+  if (!isConnected) {
+    return (
+      <div className="p-6 text-center text-gray-600 dark:text-gray-300">
+        Please connect your wallet to see your transactions.
+      </div>
+    );
+  }
+
   if (!transactions.length) {
     return <div className="p-6 text-center text-gray-600 dark:text-gray-300">No transactions yet.</div>;
   }
 
   return (
     <div className="flex flex-col gap-6 w-full">
-      {/* Header with Back button and centered title */}
-      <div className="relative w-full flex items-center justify-between">
-        <BackButton className="flex z-10" />
-        <h1 className="absolute left-1/2 transform -translate-x-1/2 text-xl md:text-2xl">Latest Transactions</h1>
+      <div className="w-full flex items-center">
+        <div className="flex-1">
+          <BackButton className="flex z-10" />
+        </div>
+        <h1 className="flex-1 text-center text-xl md:text-2xl">Latest Transactions</h1>
+        <div className="flex-1" />
       </div>
       <div className="flex flex-col gap-4">
         {transactions.map((tx) => (
