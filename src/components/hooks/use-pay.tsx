@@ -8,14 +8,14 @@ import { erc20Abi, parseUnits } from 'viem';
 import { toast } from 'sonner';
 import { ExternalLink } from 'lucide-react';
 
-import { ETHERSCAN_SEPOLIA, USDC_TOKEN_ADDRESS } from '@/consts/usdc';
-import useUserBalance from '@/hooks/useUserBalance';
-import useDecimals from '@/hooks/useDecimals';
-import useSymbol from '@/hooks/useSymbol';
-import { config } from '@/config/wagmi';
+import { useRecipient } from '@/app/recipient-provider';
+import { useTxStore } from '@/store/tx-store';
+import useUserBalance from '@/hooks/use-user-balance';
+import { useTokenInfo } from '@/hooks/use-token-info';
 import getErrorMessage from '@/utils/get-error-message';
 import getErrorDetails from '@/utils/get-error-details';
-import { useRecipient } from '@/app/recipient-provider';
+import { ETHERSCAN_SEPOLIA, USDC_TOKEN_ADDRESS } from '@/consts/usdc';
+import { config } from '@/config/wagmi';
 
 interface IUsePayProps {
   price: number;
@@ -29,12 +29,19 @@ export function usePay(props: IUsePayProps) {
 
   const [isTxPending, setTxPending] = useState(false);
 
+  const { addTx, updateTxStatus } = useTxStore();
+
   const { isConnected } = useAccount();
   const chainId = useChainId();
 
   const { balance, isBalanceLoading, isBalanceError, refetchBalance } = useUserBalance(USDC_TOKEN_ADDRESS);
-  const { decimals, isDecimalsLoading, isDecimalsError } = useDecimals(USDC_TOKEN_ADDRESS);
-  const { symbol, isSymbolLoading, isSymbolError } = useSymbol(USDC_TOKEN_ADDRESS);
+
+  const {
+    decimals,
+    symbol,
+    isError: isTokenInfoError,
+    isLoading: isTokenInfoLoading
+  } = useTokenInfo(USDC_TOKEN_ADDRESS, chainId);
 
   const { recipient, recipientError } = useRecipient();
 
@@ -49,7 +56,7 @@ export function usePay(props: IUsePayProps) {
         </div>
       ),
     networkError: () =>
-      toast.warning(
+      toast.error(
         <div className="flex flex-col gap-1">
           <span className="font-bold">Network error</span>
           <span>Wrong network. Please switch to <b>Sepolia</b>.</span>
@@ -142,8 +149,8 @@ export function usePay(props: IUsePayProps) {
   const handlePayment = async () => {
     if (!isConnected) return showToast.walletNotConnected();
     if (chainId !== sepolia.id) return showToast.networkError();
-    if (isBalanceLoading || isDecimalsLoading || isSymbolLoading) return showToast.loadingWalletData();
-    if (isBalanceError || isDecimalsError || isSymbolError || !balance || !decimals || !symbol) return showToast.walletError();
+    if (isBalanceLoading || isTokenInfoLoading) return showToast.loadingWalletData();
+    if (isBalanceError || isTokenInfoError || !balance || !decimals || !symbol) return showToast.walletError();
     if (!recipient) return showToast.recipientRequired();
     if (recipientError) return showToast.recipientInvalid();
 
@@ -156,15 +163,29 @@ export function usePay(props: IUsePayProps) {
     const toastIdApproval = showToast.waitingConfirmation();
     registerToastId(toastIdApproval);
 
+    let txHash =  '' as `0x${string}`;
+
     try {
       calculateTotalAmount(price);
 
-      const txHash = await writeContractAsync({
+      txHash = await writeContractAsync({
         address: USDC_TOKEN_ADDRESS,
         functionName: 'transfer',
         abi: erc20Abi,
         args: [recipient as `0x${string}`, amount],
       });
+
+      // Add pending transaction
+      if (txHash) {
+        addTx({
+          hash: txHash,
+          recipient,
+          amount: price.toString(),
+          name: name,
+          status: 'pending',
+          timestamp: Date.now(),
+        });
+      }
 
       if (toastIdApproval) toast.dismiss(toastIdApproval);
 
@@ -180,6 +201,9 @@ export function usePay(props: IUsePayProps) {
         showToast.paymentSuccess(txHash);
         refetchBalance();
         calculateTotalAmount(price, false);
+
+        // Update tx status to success
+        updateTxStatus(txHash, 'success');
       }
     } catch (err: unknown) {
       calculateTotalAmount(price, false);
@@ -191,6 +215,8 @@ export function usePay(props: IUsePayProps) {
       if (toastIdBroadcast) toast.dismiss(toastIdBroadcast);
 
       toast.error(getErrorDetails(errorMessage) || 'Payment failed. Please try again.');
+      // Update tx status to success
+      if (txHash) updateTxStatus(txHash, 'failed');
     } finally {
       setTxPending(false);
     }

@@ -3,21 +3,25 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { formatUnits, parseUnits } from "viem";
 import { toast } from 'sonner';
+import { useAccount, useChainId } from "wagmi";
 
 import ProductCard from "@/components/product-card";
-import useDecimals from "@/hooks/useDecimals";
-import useUserBalance from "@/hooks/useUserBalance";
-import useSymbol from "@/hooks/useSymbol";
 import PRODUCTS from "@/consts/products";
 import { USDC_TOKEN_ADDRESS } from "@/consts/usdc";
+import { useTokenInfo } from "@/hooks/use-token-info";
 
 export default function ProductsList() {
   const [totalAmount, setTotalAmount] = useState(0);
   const [currentToastId, setCurrentToastId] = useState<string | number | null>(null);
 
-  const { balance } = useUserBalance(USDC_TOKEN_ADDRESS);
-  const { decimals } = useDecimals(USDC_TOKEN_ADDRESS);
-  const { symbol } = useSymbol(USDC_TOKEN_ADDRESS);
+  const { address } = useAccount();
+  const chainId = useChainId();
+
+  const {
+    decimals,
+    symbol,
+    balance,
+  } = useTokenInfo(USDC_TOKEN_ADDRESS, chainId, address);
 
   // Add or remove product price
   const calculateTotalAmount = useCallback((price: number, add: boolean = true) => {
