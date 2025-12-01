@@ -23,6 +23,7 @@ It showcases how to:
 * **Buy products** using USDC on Sepolia.
 * Dynamically choose the **recipient address** that receives the payment.
 * Handle all transaction states: **loading, errors, and confirmations**.
+* **Track and display the latest transactions** in a dedicated page with pending, success, and failed statuses.
 
 > **Note:** This is a technical showcase, **not a production store**.
 
@@ -48,6 +49,7 @@ The app loads a default recipient address from your environment:
 * **Wagmi** + **Viem** (for Web3 interaction)
 * **Tailwind CSS**
 * **shadcn/ui**
+* **Zustand** (state management for transactions)
 * **Etherscan Sepolia** for transaction confirmations
 
 ---
