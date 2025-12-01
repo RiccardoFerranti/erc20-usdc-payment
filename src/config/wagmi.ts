@@ -1,23 +1,26 @@
 import { cookieStorage, createStorage, createConfig, http, injected } from '@wagmi/core';
-import * as wagmiChains from '@wagmi/core/chains'; // imports all exported chains
-// import { metaMask, walletConnect } from 'wagmi/connectors';
-
-// import { PROJECT_ID } from '@/consts/usdc';
+import * as wagmiChains from '@wagmi/core/chains';
 
 const allChains = Object.values(wagmiChains);
 const firstChain = allChains[0];
 
+let connectors = [injected()];
+
+// Only load MetaMask and WalletConnect in browser
+if (typeof window !== 'undefined') {
+  const { metaMask, walletConnect } = require('wagmi/connectors');
+  const { PROJECT_ID } = require('@/consts/usdc');
+
+  connectors.push(metaMask());
+  connectors.push(walletConnect({ projectId: PROJECT_ID }));
+}
+
 export const config = createConfig({
-  chains: [firstChain, ...allChains.filter(c => c.id !== firstChain.id)], // first chain + rest
-  connectors: [
-    injected(),
-    // metaMask(),
-    // walletConnect({ projectId: PROJECT_ID }),
-  ],
+  chains: [firstChain, ...allChains.filter(c => c.id !== firstChain.id)],
+  connectors,
   storage: createStorage({
     storage: cookieStorage,
   }),
-  // allow us to communicate with certain blockchain network (JSON RPC), http use by default ir
   transports: allChains.reduce((acc, chain) => {
     acc[chain.id] = http();
     return acc;
