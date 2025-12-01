@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import { usePathname } from 'next/navigation';
 import { Menu } from 'lucide-react';
+import Link from 'next/link';
 
 import DesktopMenu from './desktop-menu';
 import MobileMenu from './mobile-menu';
@@ -38,7 +39,9 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full bg-white dark:bg-black md:border-b border-gray-200 dark:border-gray-800">
       <div className="container min-h-[70px] mx-auto px-4 flex items-center gap-4 md:gap-8 md:justify-between">
         <div className="flex items-center gap-4 md:gap-8">
-          <h1 className="text-xl text-foreground">USDC Payment Products</h1>
+          <Link href="/">
+            <h1 className="text-xl text-foreground">USDC Payment Products</h1>
+          </Link>
           <DesktopMenu menu={menu} setMenu={setMenu} />
         </div>
         <div className="flex md:flex-col items-end gap-2 ml-auto md:ml-0">
