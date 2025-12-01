@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import useTxStore from '@/store/tx-store';
 import { shortenAddress } from '@/utils/short-address';
 import useSymbol from '@/hooks/use-symbol';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function LatestTransactionsPage() {
   // Subscribe to the store; automatically re-renders when store updates
@@ -20,7 +21,7 @@ export default function LatestTransactionsPage() {
 
   const chainId = useChainId();
 
-  const { symbol } = useSymbol(USDC_TOKEN_ADDRESS, chainId);
+  const { symbol, isSymbolLoading } = useSymbol(USDC_TOKEN_ADDRESS, chainId);
 
   if (!transactions.length) {
     return <div className="p-6 text-center text-gray-600 dark:text-gray-300">No transactions yet.</div>;
@@ -48,7 +49,9 @@ export default function LatestTransactionsPage() {
                 <span className="font-semibold">To:</span> {shortenAddress(tx.recipient)}
               </div>
               <div>
-                <span className="font-semibold">Amount:</span> {tx.amount} {symbol}
+                <span className="font-semibold flex items-center gap-2">
+                  Amount: {tx.amount} <span>{isSymbolLoading ? <Skeleton className="h-4 w-[50px]" /> : symbol ?? 'USDC'}</span>
+                </span>
               </div>
               <div>
                 <span className="font-semibold">Time:</span> {new Date(tx.timestamp).toLocaleString()}
@@ -62,12 +65,10 @@ export default function LatestTransactionsPage() {
                   tx.status === 'success'
                     ? `bg-green-100 text-green-700 border border-green-400 dark:bg-green-900 dark:text-green-300`
                     : '',
-                  tx.status === 'failed'
-                    ? `bg-red-100 text-red-700 border border-red-400 dark:bg-red-900 dark:text-red-300`
-                    : '',
+                  tx.status === 'failed' ? `bg-red-100 text-red-700 border border-red-400 dark:bg-red-900 dark:text-red-300` : '',
                   tx.status === 'pending'
                     ? `bg-yellow-100 text-yellow-700 border border-yellow-400 dark:bg-yellow-900 dark:text-yellow-300`
-                    : ''
+                    : '',
                 )}
               >
                 {tx.status.toUpperCase()}

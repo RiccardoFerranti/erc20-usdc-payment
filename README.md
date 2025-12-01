@@ -73,6 +73,9 @@ NEXT_PUBLIC_RECIPIENT_ADDRESS=0x...
 
 # ETHERSCAN SEPOLIA (for transaction inspecting)
 NEXT_PUBLIC_ETHERSCAN_URL=https://sepolia.etherscan.io/tx/
+
+# PROJECT ID (Wallet Connect)
+NEXT_PUBLIC_PROJECT_ID=
 ```
 
 ### 3. Run the app
