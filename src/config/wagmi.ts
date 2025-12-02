@@ -29,5 +29,5 @@ export const config = createConfig({
     acc[chain.id] = http();
     return acc;
   }, {} as Record<number, ReturnType<typeof http>>),
-  ssr: false,
+  ssr: true,
 });
