@@ -16,6 +16,8 @@ import { Button } from '@/components/ui/button';
 import Network from '@/components/network';
 import { cn } from '@/lib/utils';
 
+export const dynamic = 'force-dynamic';
+
 export default function Header() {
   const [menu, setMenu] = useState<'home' | 'transactions'>('home');
   const [menuOpen, setMenuOpen] = useState(false);
