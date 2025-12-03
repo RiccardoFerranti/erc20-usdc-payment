@@ -19,7 +19,7 @@ export const config = createConfig({
   chains: [firstChain, ...allChains.filter(c => c.id !== firstChain.id)],
   connectors,
   storage: createStorage({
-    storage: cookieStorage,
+    storage: typeof window !== 'undefined' ? window.localStorage : undefined,
   }),
   transports: allChains.reduce((acc, chain) => {
     acc[chain.id] = http();
