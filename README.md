@@ -27,6 +27,12 @@ It showcases how to:
 
 > **Note:** This is a technical showcase, **not a production store**.
 
+## Screenshots / Demo
+
+<img src="doc/screenshots/products-desktop.png" alt="Order book loading state" height="710" />
+<img src="doc/screenshots/products-tablet.png" alt="Order book loading state" height="710" />
+<img src="doc/screenshots/products-mobile.png" alt="Order book loading state" height="710" />
+
 ---
 
 ## Environment Variable
