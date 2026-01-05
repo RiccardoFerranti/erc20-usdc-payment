@@ -32,6 +32,9 @@ It showcases how to:
 <img src="doc/screenshots/products-desktop.png" alt="Order book loading state" height="710" />
 <img src="doc/screenshots/products-tablet.png" alt="Order book loading state" height="710" />
 <img src="doc/screenshots/products-mobile.png" alt="Order book loading state" height="710" />
+<img src="doc/screenshots/products-tx-rejected.gif" alt="Order book loading state" />
+<img src="doc/screenshots/products-tx-approved.gif" alt="Order book loading state" />
+<img src="doc/screenshots/products-latest-tx.gif" alt="Order book loading state" />
 
 ---
 
