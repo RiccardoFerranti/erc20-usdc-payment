@@ -1,6 +1,6 @@
-# Web3 Demo Store — USDC Payments (Sepolia)
+# Web3 Store with ERC-20 USDC Payments
 
-A demo **Web3 e-commerce app** built with **Next.js**, **Wagmi**, **viem**, **Tailwind CSS**, and **shadcn/ui**.
+A **Web3 e-commerce app** built with **Next.js**, **Wagmi**, **viem**, **Tailwind CSS**, and **shadcn/ui**.
 
 Users can **connect a wallet**, **claim testnet USDC** from a faucet, and **purchase demo products** using **ERC-20 USDC on Sepolia** by sending tokens to a chosen recipient address.
 
@@ -13,7 +13,7 @@ Try the DApp here:
 
 ## What This Project Does
 
-This project is a technical showcase demonstrating how to build a basic Web3 payment flow.
+This project showcases how to build a complete Web3 payment flow using ERC-20 USDC on Sepolia
 
 It showcases how to:
 
